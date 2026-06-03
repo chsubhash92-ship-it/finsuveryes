@@ -1,13 +1,38 @@
 import { supabase } from '../supabase/client';
+import type { Response } from '../supabase/client';
 
 export const responseService = {
   async getResponses(formId: string) {
-    const { data, error } = await supabase
-      .from('responses')
-      .select('*')
-      .eq('form_id', formId)
-      .order('submitted_at', { ascending: false });
-    return { data, error };
+    let allData: Response[] = [];
+    let from = 0;
+    const limit = 1000;
+    let hasMore = true;
+
+    while (hasMore) {
+      const { data, error } = await supabase
+        .from('responses')
+        .select('*')
+        .eq('form_id', formId)
+        .order('submitted_at', { ascending: false })
+        .range(from, from + limit - 1);
+
+      if (error) {
+        return { data: null, error };
+      }
+
+      if (data) {
+        allData = [...allData, ...(data as Response[])];
+        if (data.length < limit) {
+          hasMore = false;
+        } else {
+          from += limit;
+        }
+      } else {
+        hasMore = false;
+      }
+    }
+
+    return { data: allData, error: null };
   },
 
   async submitResponse(
