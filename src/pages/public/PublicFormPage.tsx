@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  FileText, CheckCircle, AlertCircle, Star, ChevronDown, Calendar, Upload, Loader
+  CheckCircle, AlertCircle, Star, ChevronDown, Upload, Loader
 } from 'lucide-react';
 import { formService } from '../../services/formService';
 import { responseService } from '../../services/responseService';
@@ -419,11 +419,7 @@ export default function PublicFormPage() {
           </motion.div>
         </form>
 
-        {/* Footer */}
-        <div className="text-center mt-8 text-xs text-gray-400 dark:text-gray-500 flex items-center justify-center gap-1.5">
-          <FileText className="w-3.5 h-3.5" />
-          Powered by FormCraft
-        </div>
+
       </div>
     </div>
   );
